@@ -3,14 +3,14 @@ Ellie's Flowers is a projection with different plants and flowers that adapt to 
 
 ## Hardware
 Arduino Nano ESP32
--- CZN-15E sound detection sensor module
--- DHT11 KY-015 temperature and hygrometer
--- SGP30 TVOC Sensor shield
+-- CZN-15E sound detection sensor module  
+-- DHT11 KY-015 temperature and hygrometer  
+-- SGP30 TVOC Sensor shield  
 
 ## Libraries
-WiFiWebServer by Khoi Hoang
+WiFiWebServer by Khoi Hoang  
 
 ## Contributors
-Dewi Berkhof
-Andrada Pancu
-Eline Vooijs
+Dewi Berkhof  
+Andrada Pancu  
+Eline Vooijs  
