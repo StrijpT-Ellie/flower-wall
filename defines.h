@@ -18,73 +18,39 @@
 #define _WIFI_LOGLEVEL_             4
 #define _WIFININA_LOGLEVEL_         3
 
-#if ( defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4) )
+#if (ESP32)
 
-#if defined(BOARD_NAME)
-  #undef BOARD_NAME
-#endif
+  #define USE_WIFI_NINA         false
 
-#if defined(CORE_CM7)
-  #warning Using Portenta H7 M7 core
-  #define BOARD_NAME            "PORTENTA_H7_M7"
-#else
-  #warning Using Portenta H7 M4 core
-  #define BOARD_NAME            "PORTENTA_H7_M4"
-#endif
-
-#define USE_WIFI_PORTENTA_H7  true
-
-#define USE_WIFI_NINA         false
-d:\University\Semester 4\Ellie\webserver_v2.zip
-// To use the default WiFi library here
-#define USE_WIFI_CUSTOM       false
-
-#elif (ESP32)
-
-#define USE_WIFI_NINA         false
-
-// To use the default WiFi library here
-#define USE_WIFI_CUSTOM       false
+  // To use the default WiFi library here
+  #define USE_WIFI_CUSTOM       false
 
 #elif (ESP8266)
 
-#define USE_WIFI_NINA         false
+  #define USE_WIFI_NINA         false
 
-// To use the default WiFi library here
-#define USE_WIFI_CUSTOM       true
+  // To use the default WiFi library here
+  #define USE_WIFI_CUSTOM       true
 
 #elif ( defined(ARDUINO_SAMD_MKR1000)  || defined(ARDUINO_SAMD_MKRWIFI1010) )
 
-#define USE_WIFI_NINA         false
-#define USE_WIFI101           true
-#define USE_WIFI_CUSTOM       false
+  #define USE_WIFI_NINA         false
+  #define USE_WIFI101           true
+  #define USE_WIFI_CUSTOM       false
 
 #elif ( defined(ARDUINO_NANO_RP2040_CONNECT) || defined(ARDUINO_SAMD_NANO_33_IOT) )
 
-#define USE_WIFI_NINA         true
-#define USE_WIFI101           false
-#define USE_WIFI_CUSTOM       false
-
-#elif defined(ARDUINO_RASPBERRY_PI_PICO_W)
-
-#define USE_WIFI_NINA         false
-#define USE_WIFI101           false
-#define USE_WIFI_CUSTOM       false
-
-#elif ( defined(__AVR_ATmega4809__) || defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || \
-      defined(ARDUINO_AVR_ATmega4809) || defined(ARDUINO_AVR_ATmega4808) || defined(ARDUINO_AVR_ATmega3209) || \
-      defined(ARDUINO_AVR_ATmega3208) || defined(ARDUINO_AVR_ATmega1609) || defined(ARDUINO_AVR_ATmega1608) || \
-      defined(ARDUINO_AVR_ATmega809) || defined(ARDUINO_AVR_ATmega808) )
-
-#error Not supported. Lack of memory for megaAVR
+  #define USE_WIFI_NINA         true
+  #define USE_WIFI101           false
+  #define USE_WIFI_CUSTOM       false
 
 #else
 
-#define USE_WIFI_NINA         false
-#define USE_WIFI101           false
+  #define USE_WIFI_NINA         false
+  #define USE_WIFI101           false
 
-// If not USE_WIFI_NINA, you can USE_WIFI_CUSTOM, then include the custom WiFi library here
-#define USE_WIFI_CUSTOM       true
+  // If not USE_WIFI_NINA, you can USE_WIFI_CUSTOM, then include the custom WiFi library here
+  #define USE_WIFI_CUSTOM       true
 
 #endif
 
@@ -124,15 +90,6 @@ d:\University\Semester 4\Ellie\webserver_v2.zip
   #define SHIELD_TYPE           "Unknown WiFi shield/Library"
 #endif
 
-#if ( defined(NRF52840_FEATHER) || defined(NRF52832_FEATHER) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT) || \
-        defined(NRF52840_FEATHER_SENSE) || defined(NRF52840_ITSYBITSY) || defined(NRF52840_CIRCUITPLAY) || defined(NRF52840_CLUE) || \
-        defined(NRF52840_METRO) || defined(NRF52840_PCA10056) || defined(PARTICLE_XENON) || defined(NINA_B302_ublox) || defined(NINA_B112_ublox) )
-#if defined(WIFI_USE_NRF528XX)
-  #undef WIFI_USE_NRF528XX
-#endif
-#define WIFI_USE_NRF528XX          true
-#endif
-
 #if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
       || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) \
       || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) \
@@ -152,39 +109,7 @@ d:\University\Semester 4\Ellie\webserver_v2.zip
   #warning Use SAM_DUE architecture
 #endif
 
-#if ( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
-       defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
-       defined(STM32WB) || defined(STM32MP1) ) && ! ( defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4) )
-#if defined(WIFI_USE_STM32)
-  #undef WIFI_USE_STM32
-#endif
-#define WIFI_USE_STM32      true
-#endif
-
-#ifdef CORE_TEENSY
-  #if defined(__IMXRT1062__)
-    // For Teensy 4.1/4.0
-    #define BOARD_TYPE      "TEENSY 4.1/4.0"
-  #elif defined(__MK66FX1M0__)
-    #define BOARD_TYPE "Teensy 3.6"
-  #elif defined(__MK64FX512__)
-    #define BOARD_TYPE "Teensy 3.5"
-  #elif defined(__MKL26Z64__)
-    #define BOARD_TYPE "Teensy LC"
-  #elif defined(__MK20DX256__)
-    #define BOARD_TYPE "Teensy 3.2" // and Teensy 3.1 (obsolete)
-  #elif defined(__MK20DX128__)
-    #define BOARD_TYPE "Teensy 3.0"
-  #elif defined(__AVR_AT90USB1286__)
-    #error Teensy 2.0++ not supported yet
-  #elif defined(__AVR_ATmega32U4__)
-    #error Teensy 2.0 not supported yet
-  #else
-    // For Other Boards
-    #define BOARD_TYPE      "Unknown Teensy Board"
-  #endif
-
-#elif defined(WIFI_USE_NRF528XX)
+#if defined(WIFI_USE_NRF528XX)
   #if defined(NRF52840_FEATHER)
     #define BOARD_TYPE      "NRF52840_FEATHER_EXPRESS"
   #elif defined(NRF52832_FEATHER)
@@ -316,7 +241,6 @@ d:\University\Semester 4\Ellie\webserver_v2.zip
     #define BOARD_TYPE      "SAMD Unknown"
   #endif
 
-#elif defined(WIFI_USE_STM32)
   #if defined(STM32F0)
     #warning STM32F0 board selected
     #define BOARD_TYPE  "STM32F0"
@@ -386,7 +310,7 @@ d:\University\Semester 4\Ellie\webserver_v2.zip
 
 #include <WiFiWebServer.h>
 
-char ssid[] = "Andrada";        // your network SSID (name)
-char pass[] = "12345671";        // your network password
+char ssid[] = "FlowerWall";        // network SSID (name)
+char pass[] = "12345671!";        // network password
 
 #endif    //defines_h
