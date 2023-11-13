@@ -5,8 +5,6 @@ int temp = 0;
 int humidity = 0;
 
 int dhtPin;
-//int CO2 = 0;
-//int soundLv = 0;
 
 //CONSTRUCTOR
 DHT11::DHT11(int dhtPin)
@@ -21,10 +19,11 @@ DHT11::DHT11(int dhtPin)
 bool DHT11::sensorTimeout() 
 {
   //timeout check; DEF timeout as: the read value stays the same over 10 seconds
-  unsigned int loop = 10000;
+  int loop = 10000;
   while(digitalRead(dhtPin) == LOW)
   {
-    if(--loop <= 0)
+    loop--;
+    if(loop <= 0)
     {
       Serial.println("DHT11 TIMEOUT");
       return 1;
@@ -33,7 +32,8 @@ bool DHT11::sensorTimeout()
   loop = 10000;
   while(digitalRead(dhtPin) == HIGH)
   {
-    if(--loop <= 0)
+    loop--;
+    if(loop <= 0)
     {
       Serial.println("DHT11 TIMEOUT");
       return 1;
@@ -71,24 +71,33 @@ int DHT11::readTemp(int pin)
   for (int i = 0; i < 5; i++) data[i] = 0;
 
   //startup times of sensor
-  pinMode(dhtPin, OUTPUT);
+  /*pinMode(dhtPin, OUTPUT);
   digitalWrite(dhtPin, LOW);
   delay(18);
   digitalWrite(dhtPin, HIGH);
   delay(40);
   pinMode(pin, INPUT);
-  Serial.println("Passed startup time");
+  Serial.println("Passed startup time");*/
 
   //timeout check; DEF timeout as: the read value stays the same over 10 seconds
   bool timeoutCheck = sensorTimeout();
   if(timeoutCheck == 1) return -1;
-  Serial.println("Passed timeout check");
+  Serial.println("Passed timeout check TEMP");
 
 
   //data read; 
   //Data struct of the sensor is 40 bits
   for(int i = 0; i < 40 && index < 5; i++)
   {
+
+    pinMode(dhtPin, OUTPUT);
+    digitalWrite(dhtPin, LOW);
+    delay(18);
+    digitalWrite(dhtPin, HIGH);
+    delay(40);
+    pinMode(pin, INPUT);
+    Serial.println("Passed startup time");
+
     data[i] = readByte();
     index++;
 
@@ -120,25 +129,25 @@ int DHT11::readHumid(int pin)
   //empty buffer
   for (int i = 0; i < 5; i++) data[i] = 0;
 
-  //startup times of sensor
-  pinMode(dhtPin, OUTPUT);
-  digitalWrite(dhtPin, LOW);
-  delay(18);
-  digitalWrite(dhtPin, HIGH);
-  delay(40);
-  pinMode(pin, INPUT);
-  Serial.println("Passed startup time");
-
   //timeout check; DEF timeout as: the read value stays the same over 10 seconds
   bool timeoutCheck = sensorTimeout();
   if(timeoutCheck == 1) return -1;
-  Serial.println("Passed timeout check");
+  Serial.println("Passed timeout check HUMIDITY");
 
 
   //data read; 
   //Data struct of the sensor is 40 bits
   for(int i = 0; i < 40 && index < 5; i++)
   {
+     //startup times of sensor
+    pinMode(dhtPin, OUTPUT);
+    digitalWrite(dhtPin, LOW);
+    delay(18);
+    digitalWrite(dhtPin, HIGH);
+    delay(40);
+    pinMode(pin, INPUT);
+    Serial.println("Passed startup time");
+
     data[i] = readByte();
     index++;
 
