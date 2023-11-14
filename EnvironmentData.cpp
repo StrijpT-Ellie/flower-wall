@@ -4,41 +4,42 @@
 int temp = 0;
 int humidity = 0;
 
-int dhtPin;
-
 //CONSTRUCTOR
 DHT11::DHT11(int dhtPin)
 {
-  _pin = dhtPin;
+  this->_pin = dhtPin;
   pinMode(_pin, OUTPUT);
   digitalWrite(_pin, HIGH);
+  delay(1000);
 }
 
 
 //0 means no timeout, 1 means timed out
 bool DHT11::sensorTimeout() 
 {
-  //timeout check; DEF timeout as: the read value stays the same over 10 seconds
+  
   int loop = 10000;
-  while(digitalRead(dhtPin) == LOW)
+  while(digitalRead(_pin) == LOW)
   {
     loop--;
     if(loop <= 0)
     {
-      Serial.println("DHT11 TIMEOUT");
+      Serial.println("DHT11 TIMEOUT - low");
       return 1;
     }
   }
   loop = 10000;
-  while(digitalRead(dhtPin) == HIGH)
+  while(digitalRead(_pin) == HIGH)
   {
     loop--;
     if(loop <= 0)
     {
-      Serial.println("DHT11 TIMEOUT");
+      Serial.println("DHT11 TIMEOUT - High");
       return 1;
     }
   }
+
+  return 0;
 }
 
 byte DHT11::readByte()
@@ -70,15 +71,6 @@ int DHT11::readTemp(int pin)
   //empty buffer
   for (int i = 0; i < 5; i++) data[i] = 0;
 
-  //startup times of sensor
-  /*pinMode(dhtPin, OUTPUT);
-  digitalWrite(dhtPin, LOW);
-  delay(18);
-  digitalWrite(dhtPin, HIGH);
-  delay(40);
-  pinMode(pin, INPUT);
-  Serial.println("Passed startup time");*/
-
   //timeout check; DEF timeout as: the read value stays the same over 10 seconds
   bool timeoutCheck = sensorTimeout();
   if(timeoutCheck == 1) return -1;
@@ -90,13 +82,13 @@ int DHT11::readTemp(int pin)
   for(int i = 0; i < 40 && index < 5; i++)
   {
 
-    pinMode(dhtPin, OUTPUT);
-    digitalWrite(dhtPin, LOW);
+    /*pinMode(_pin, OUTPUT);
+    digitalWrite(_pin, LOW);
     delay(18);
-    digitalWrite(dhtPin, HIGH);
+    digitalWrite(_pin, HIGH);
     delay(40);
-    pinMode(pin, INPUT);
-    Serial.println("Passed startup time");
+    pinMode(_pin, INPUT);
+    Serial.println("Passed startup time");*/
 
     data[i] = readByte();
     index++;
@@ -106,6 +98,8 @@ int DHT11::readTemp(int pin)
   //pull output values
   //we could aproximate the decimals(index 1 and 3) later; ignoring them here
   temp = data[2];
+
+  Serial.println("I arrived past the byte read");
 
   //Checksum check
   uint8_t sum = data[0] + data[1] + data[2] + data[3];
@@ -139,14 +133,6 @@ int DHT11::readHumid(int pin)
   //Data struct of the sensor is 40 bits
   for(int i = 0; i < 40 && index < 5; i++)
   {
-     //startup times of sensor
-    pinMode(dhtPin, OUTPUT);
-    digitalWrite(dhtPin, LOW);
-    delay(18);
-    digitalWrite(dhtPin, HIGH);
-    delay(40);
-    pinMode(pin, INPUT);
-    Serial.println("Passed startup time");
 
     data[i] = readByte();
     index++;
