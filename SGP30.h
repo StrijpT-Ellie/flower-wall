@@ -9,6 +9,8 @@
 class SGP30
 {
   public:
+    SGP30(uint8_t sgpPin)
+    { };
 
     void Startup();
 
