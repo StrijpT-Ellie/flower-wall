@@ -9,6 +9,7 @@ const uint8_t sgpPin = 2;
 const uint8_t kyPin = A0;
 
 DHT22 DHT22(dhtPin); //constructor dht22
+SGP30 SGP30(sgpPin); //constructor sgp30
 
 void setup() {
   //serial start
