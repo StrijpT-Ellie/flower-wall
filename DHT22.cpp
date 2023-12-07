@@ -91,7 +91,7 @@ void DHT22::measureTimings()
 
   if(!_firstStart && millis() - _timer < samplingTime)
   {
-    return OK;
+    _error = 0;
   }
   _timer = millis();
   _firstStart = false;
