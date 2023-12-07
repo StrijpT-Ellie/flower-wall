@@ -15,14 +15,16 @@ void SGP30::Startup()
   }
 }
 
-void SGP30::sendSGP30Command(uint16_t command) { //is responsible for sending a command to the SGP30 sensor over the I2C 
+void SGP30::sendSGP30Command(uint16_t command) 
+{ //is responsible for sending a command to the SGP30 sensor over the I2C 
   Wire.beginTransmission(SGP30_I2C_ADDR); //initiates communication with the device at the specified I2C address
   Wire.write(command >> 8);   // Send the high byte of the command, shifts the bits of the command variable 8 positions to the right
   Wire.write(command & 0xFF); // Send the low byte of the command
   Wire.endTransmission();//finalizes the I2C communication and transmits the command to the sensor
 }
 
-bool SGP30::initSGP30() {
+bool SGP30::initSGP30() 
+{
   Wire.beginTransmission(SGP30_I2C_ADDR);  // Initialize air quality measurements
   Wire.write(0x20);//Writes the high byte of the command
   Wire.write(0x03);  // Writes the low byte of the command, command to start air quality measurements
@@ -43,7 +45,8 @@ bool SGP30::initSGP30() {
   return false;  
 }
 
-bool SGP30::checkCRC(byte data[], int length) {
+bool SGP30::checkCRC(byte data[], int length) 
+{
   uint8_t crc = 0xFF;
   for (int i = 0; i < length; i++) {
     crc ^= data[i]; //XORs (exclusive OR) the current byte of the data with the current CRC value
@@ -59,7 +62,8 @@ bool SGP30::checkCRC(byte data[], int length) {
   return crc == 0;
 }
 
-void SGP30::readAndDisplayData(const char* dataType) {
+void SGP30::readAndDisplayData(const char* dataType) 
+{
   Wire.requestFrom(SGP30_I2C_ADDR, 6);  
   delay(50);
   if (Wire.available() == 6) {  
