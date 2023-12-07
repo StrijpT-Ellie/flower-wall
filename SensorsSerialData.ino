@@ -2,16 +2,16 @@
 #include "SGP30.h"
 
 #include <Wire.h>
-//#include <string>
 
 const uint8_t dhtPin = 4;
-const uint8_t sgpPin = 2;
-const uint8_t kyPin = A0;
+const uint8_t sgpPin = SDA;
+const uint8_t kyPin = 2;
 
 DHT22 DHT22(dhtPin); //constructor dht22
 SGP30 SGP30(sgpPin); //constructor sgp30
 
-void setup() {
+void setup() 
+{
   //serial start
   Serial.begin(115200);
   Wire.begin();
@@ -36,12 +36,10 @@ void setup() {
   delay(2000); //passing unstable time
 
   pinMode(kyPin, INPUT); 
-
-  
 }
 
-void loop() {
-  
+void loop() 
+{
   Serial.println("SGP30:  \n");
   SGP30.sendSGP30Command(MEASURE_AIR_QUALITY);
   SGP30.readAndDisplayData("Air Quality Data");
@@ -52,10 +50,10 @@ void loop() {
 
   Serial.println("KY037:  \n");
   Serial.println(get_sound_value());
-
 }
 
-long get_sound_value() {
+long get_sound_value() 
+{
   long sum = 0;
   int i = 0;
   const int max = 500;
