@@ -1,5 +1,6 @@
 #include "DHT22.h"
 #include "SGP30.h"
+#include "KY037.h"
 
 #include <Wire.h>
 
@@ -9,6 +10,7 @@ const uint8_t kyPin = 2;
 
 DHT22 DHT22(dhtPin); //constructor dht22
 SGP30 SGP30(sgpPin); //constructor sgp30
+KY037 KY037(kyPin); //constructor ky037
 
 void setup() 
 {
@@ -19,8 +21,10 @@ void setup()
   while (!Serial && millis() < 5000)
     delay(200);
 
-  Serial.println("Starting Flower Wall on ESP-WROOM-32");
-  Serial.println("Using: DHT22, SGP30, KY037");
+  Serial.print(F("\nStarting Flower Wall on "));
+  Serial.print("ESP-WHOOP-32");
+  Serial.print(F(" with "));
+  Serial.println("DHT22, SGP30, KY037");
 
   //delay for startup
   delay(500);
@@ -36,27 +40,16 @@ void setup()
 
 void loop() 
 {
+  Serial.println("SGP30:  \n");
   SGP30.sendSGP30Command(MEASURE_AIR_QUALITY);
-  delay(10); // Delay in between I2C transactions, otherwise will not work and you receive message: "Data not available or not processed successfully"
-  SGP30.readAndDisplayData();
+  SGP30.readAndDisplayData("Air Quality Data");
 
-  Serial.print("DHT22 TEMP: "); Serial.println(DHT22.getTemp(dhtPin));
-  Serial.print("DHT22 HUMID: "); Serial.println(DHT22.getHumid(dhtPin));
+  Serial.println("DHT22:  \n");
+  Serial.println(DHT22.getTemp(dhtPin));
+  Serial.println(DHT22.getHumid(dhtPin));
 
-  Serial.print("KY037: "); Serial.println(get_sound_value());
-  Serial.println("\n");
-  delay(500);
-}
+  Serial.println("KY037:  \n");
+  Serial.println(KY037.get_sound_value(kyPin));
 
-long get_sound_value() 
-{
-  long sum = 0;
-  int i = 0;
-  const int max = 500;
-  while(i < max) {
-    sum += analogRead(kyPin);
-    i++;
-  }
-
-  return sum / max;
+  delay(2000);
 }
