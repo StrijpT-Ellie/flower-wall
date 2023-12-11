@@ -28,15 +28,8 @@ void loop() {
   delay(1000);  // Wait for measurement completion (ad
   readAndDisplayData("Air Quality Data");  // read and process air quality data
 
-
-  // Send Measure_raw_signals command
-  // sendSGP30Command(MEASURE_RAW_SIGNALS);
-
   // Wait for measurement completion (adjust delay as needed)
   delay(1000);
-
-  // Read and process raw signals data
-  // readAndDisplayData("Raw Signals Data");
 }
 
 void sendSGP30Command(uint16_t command) { //is responsible for sending a command to the SGP30 sensor over the I2C 
@@ -83,20 +76,6 @@ bool checkCRC(byte data[], int length) {
 
   return crc == 0;
 }
-// bool pollSGP30Data() {
-//   Wire.requestFrom(SGP30_I2C_ADDR, 6);  
-//   delay(50);  // Allows some time for data 
-
-//   // Check if data is available
-//   if (Wire.available() == 6) {  
-//     byte data[6];
-//     for (int i = 0; i < 6; i++) {
-//       data[i] = Wire.read();
-//     }
-//     return true;  // data available and processed successfully
-//   }
-//   return false;  // Data not available :( or not processed successfully
-// }
 
 void readAndDisplayData(const char* dataType) {
   Wire.requestFrom(SGP30_I2C_ADDR, 6);  
@@ -107,15 +86,21 @@ void readAndDisplayData(const char* dataType) {
       data[i] = Wire.read();
     }
 
-    // Display data
+    int co2data = (data[0] * 256) + data[1];
+    int tvocdata = (data[2] * 256) + data[3];
+
+
     Serial.println(dataType);
-    for (int i = 0; i < 6; i++) {
-      Serial.print(data[i]);
-      Serial.print(" ");
-    }
-    Serial.println();
+    Serial.print("co2data: ");
+    Serial.print(co2data);
+    Serial.print(" ppm, TVOC: ");
+    Serial.print(tvocdata);
+    Serial.println(" ppb");
   } else {
     Serial.println("Data not available or not processed successfully");
   }
+
+  delay(1000); 
 }
+
 
