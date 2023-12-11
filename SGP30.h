@@ -8,27 +8,26 @@
 
 class SGP30
 {
-  public:
-    SGP30(uint8_t sgpPin)
-    { };
+public:
+  SGP30(uint8_t sgpPin)
+  { };
 
-    void Startup();
+  void Startup();
 
-    void sendSGP30Command(uint16_t command);
+  void sendSGP30Command(uint16_t command);
 
-    bool initSGP30();
+  bool initSGP30();
 
-    bool checkCRC(byte data[], int length);
-    
-    void readAndDisplayData(const char* dataType);
+  bool checkCRC(byte data[], int length);
+  
+  void readAndDisplayData();
 
-  private:
+private:
 
-    // SGP30 I2C address
-    #define SGP30_I2C_ADDR 0x58
-    #define MEASURE_AIR_QUALITY 0x2008
-    #define MEASURE_RAW_SIGNALS 0x2050
-    
+  // SGP30 I2C address
+#define SGP30_I2C_ADDR 0x58
+#define MEASURE_AIR_QUALITY 0x2008
+#define MEASURE_RAW_SIGNALS 0x2050 
 };
 
 #endif

@@ -62,7 +62,7 @@ bool SGP30::checkCRC(byte data[], int length)
   return crc == 0;
 }
 
-void SGP30::readAndDisplayData(const char* dataType) 
+void SGP30::readAndDisplayData() 
 {
   Wire.requestFrom(SGP30_I2C_ADDR, 6);  
   delay(50);
@@ -72,14 +72,16 @@ void SGP30::readAndDisplayData(const char* dataType)
       data[i] = Wire.read();
     }
 
-    // Display data
-    Serial.println(dataType);
-    for (int i = 0; i < 6; i++) {
-      Serial.print(data[i]);
-      Serial.print(" ");
-    }
-    Serial.println();
+    int co2data = (data[0] * 256) + data[1];
+    int tvocdata = (data[2] * 256) + data[3];
+
+    Serial.print("SGP30 CO2: ");
+    Serial.print(co2data);
+    Serial.print("\nSGP30 TVOC: ");
+    Serial.println(tvocdata);
   } else {
     Serial.println("Data not available or not processed successfully");
   }
+
+  delay(50);
 }
