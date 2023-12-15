@@ -75,9 +75,9 @@ void SGP30::readAndDisplayData()
     int co2data = (data[0] * 256) + data[1];
     int tvocdata = (data[2] * 256) + data[3];
 
-    Serial.print("SGP30 CO2: ");
-    Serial.print(co2data);
-    Serial.print("\nSGP30 TVOC: ");
+    Serial.print("CO2: ");
+    Serial.println(co2data);
+    Serial.print("TVOC: ");
     Serial.println(tvocdata);
   } else {
     Serial.println("Data not available or not processed successfully");

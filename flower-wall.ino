@@ -40,15 +40,16 @@ void setup()
 
 void loop() 
 {
-  Serial.println("SGP30:  \n");
   SGP30.sendSGP30Command(MEASURE_AIR_QUALITY);
-  SGP30.readAndDisplayData("Air Quality Data");
+  delay(10); // WARNING, THIS DELAY MUST NOT BE REMOVED. if you do, the I2C transactions will be too quickly after eachother, this will make it go boom boom. So please refrain from touching this delay ~ Wouter 2023
+  SGP30.readAndDisplayData();
 
-  Serial.println("DHT22:  \n");
+  Serial.print("DHT22: ");
   Serial.println(DHT22.getTemp(dhtPin));
+  Serial.print("DHT22: ");
   Serial.println(DHT22.getHumid(dhtPin));
 
-  Serial.println("KY037:  \n");
+  Serial.print("KY037: ");
   Serial.println(KY037.get_sound_value(kyPin));
 
   delay(2000);
